@@ -1,0 +1,28 @@
+{
+    "name": "jupyterlab-poweroff",
+    "version": "0.1.0",
+    "description": "Power off the Linux host from JupyterLab after confirmation",
+    "private": true,
+    "license": "MIT",
+    "main": "src/index.js",
+    "files": [
+        "src/index.js"
+    ],
+    "scripts": {
+        "build:labextension": "jupyter-builder build .",
+        "build:prod": "npm run build:labextension"
+    },
+    "dependencies": {
+        "@jupyterlab/application": "^4.0.0",
+        "@jupyterlab/apputils": "^4.0.0",
+        "@jupyterlab/coreutils": "^6.0.0",
+        "@jupyterlab/services": "^7.0.0"
+    },
+    "devDependencies": {
+        "@jupyter/builder": "^1.0.0"
+    },
+    "jupyterlab": {
+        "extension": "src/index.js",
+        "outputDir": "jupyterlab_poweroff/labextension"
+    }
+}
