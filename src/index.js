@@ -4,22 +4,22 @@ import { ServerConnection } from '@jupyterlab/services';
 
 const plugin = {
     id: 'jupyterlab-poweroff:plugin',
-    description: 'Power off the Linux host after confirmation.',
+    description: 'Power off or reboot the Linux host after confirmation.',
     autoStart: true,
     activate: (app) => {
 
         let shuttingDown = false;
 
-        const poweroff = async () => {
+        const runAction = async (action, label) => {
 
             if (shuttingDown) {
                 return;
             }
 
             const confirmation = await showDialog({
-                title: 'Power off this machine?',
+                title: `${label} this machine?`,
                 body: 'All running notebooks, kernels and processes will be stopped.',
-                buttons: [Dialog.cancelButton(), Dialog.warnButton({ label: 'Power off' })],
+                buttons: [Dialog.cancelButton(), Dialog.warnButton({ label })],
             });
 
             if (!confirmation.button.accept) {
@@ -31,7 +31,7 @@ const plugin = {
             try {
 
                 const settings = ServerConnection.makeSettings();
-                const url = URLExt.join(settings.baseUrl, 'api', 'poweroff');
+                const url = URLExt.join(settings.baseUrl, 'api', action);
                 const response = await ServerConnection.makeRequest(url, { method: 'POST' }, settings);
 
                 if (!response.ok) {
@@ -43,21 +43,30 @@ const plugin = {
                 shuttingDown = false;
 
                 await showDialog({
-                    title: 'Power off failed',
+                    title: `${label} failed`,
                     body: String(error),
                     buttons: [Dialog.okButton()],
                 });
             }
         };
 
-        const button = new ToolbarButton({
+        const poweroffButton = new ToolbarButton({
             label: 'Power off',
             tooltip: 'Power off the Linux machine',
-            onClick: () => { void poweroff(); },
+            onClick: () => { void runAction('poweroff', 'Power off'); },
         });
 
-        button.id = 'jp-jupyterlab-poweroff';
-        app.shell.add(button, 'top', { rank: 1000 });
+        poweroffButton.id = 'jp-jupyterlab-poweroff';
+        app.shell.add(poweroffButton, 'top', { rank: 1000 });
+
+        const rebootButton = new ToolbarButton({
+            label: 'Reboot',
+            tooltip: 'Reboot the Linux machine',
+            onClick: () => { void runAction('reboot', 'Reboot'); },
+        });
+
+        rebootButton.id = 'jp-jupyterlab-reboot';
+        app.shell.add(rebootButton, 'top', { rank: 1001 });
     },
 };
 

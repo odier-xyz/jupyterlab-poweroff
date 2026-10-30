@@ -4,8 +4,8 @@ build-backend = 'hatchling.build'
 
 [project]
 name = 'jupyterlab-poweroff'
-version = '0.1.0'
-description = 'Power off the Linux host from JupyterLab after confirmation'
+version = '0.2.0'
+description = 'Power off or reboot the Linux host from JupyterLab after confirmation'
 readme = 'README.md'
 license = { file = 'LICENSE' }
 requires-python = '>=3.9'

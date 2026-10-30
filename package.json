@@ -1,7 +1,7 @@
 {
     "name": "jupyterlab-poweroff",
-    "version": "0.1.0",
-    "description": "Power off the Linux host from JupyterLab after confirmation",
+    "version": "0.2.0",
+    "description": "Power off or reboot the Linux host from JupyterLab after confirmation",
     "private": true,
     "license": "MIT",
     "main": "src/index.js",
